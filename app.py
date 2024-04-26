@@ -16,6 +16,17 @@ transactions = [
 def get_transactions():
     return render_template("transactions.html", transactions=transactions)
 
+# Search transactions
+@app.route("/search", methods = ['GET', 'POST'])
+def search_transactions():
+    if request.method == "POST":
+        min = float(request.form['min_amount'])
+        max = float(request.form['max_amount'])
+        filtered_transactions = [t for t in transactions if (t['amount'] >= min and t['amount'] <= max)]
+        return render_template("transactions.html", transactions=filtered_transactions)
+    if request.method == "GET":
+        return render_template("search.html")
+
 # Create operation: Add transaction
 @app.route("/add", methods = ['GET', 'POST'])
 def add_transaction():
